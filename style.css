@@ -1,0 +1,306 @@
+:root{
+    --max-width:1200px;
+    --gutter:1rem;
+    --muted:#6c757d;
+    --accent:#dc3545; /* matches danger in bootstrap */
+    --radius:8px;
+}
+
+/* smooth scrolling for in-page nav links */
+html{ scroll-behavior: smooth; }
+
+/* About section helpers: center on small, left align on md+ */
+#about .about-details{ text-align: center; }
+@media (min-width:768px){
+    #about .about-details{ text-align: left; }
+}
+
+/* Basic reset + typography */
+html,body{height:100%;}
+body{
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    line-height:1.5;
+    color:#222;
+    background:#fff;
+}
+
+.container{max-width:var(--max-width); margin-left:auto; margin-right:auto; padding-left:var(--gutter); padding-right:var(--gutter);}
+
+/* NAV tweaks */
+.navbar-brand{letter-spacing:.3px}
+
+/* HERO: use flexbox for layout */
+#hero .d-sm-flex{ display:flex; gap:1.5rem; align-items:center; justify-content:space-between; }
+#hero img{ border-radius:8px; object-fit:cover; }
+
+/* ARTICLES: use flexbox grid for uniform card layout */
+#article .row{ display:flex; flex-wrap:wrap; gap:1.25rem; justify-content:center; }
+/* prevent the article two-column layout from wrapping into two rows at small+ widths */
+@media (min-width:576px){
+    #article .row{ flex-wrap:nowrap; }
+}
+#article .col{ flex: 1 1 280px; max-width:340px; }
+#article .card{ height:100%; display:flex; flex-direction:column; }
+#article .card-body{ flex:1 1 auto; }
+
+/* make article cards show pointer to indicate clickability */
+#article .card{ cursor: pointer; }
+
+/* article list styling (left column) */
+.article-list li{ padding:0.6rem 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+.article-list li:last-child{ border-bottom:none; }
+.article-list li h5{ margin-bottom:0.35rem; }
+.article-list li:hover{ background: rgba(0,0,0,0.02); }
+.theme-dark .article-list li{ border-color: rgba(255,255,255,0.04); }
+.theme-dark .article-list li:hover{ background: rgba(255,255,255,0.02); }
+
+.clickable-article{ transition: transform .18s ease, box-shadow .18s ease; }
+.clickable-article:focus, .clickable-article:hover{ transform:translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); outline: none; }
+
+/* Article detail layout */
+#article-detail{ padding-top:2rem; padding-bottom:2rem; }
+#article-detail .container{ display:flex; gap:1.5rem; align-items:flex-start; }
+#article-detail .col-12{ padding:0; }
+#article-detail .detail-img{ width:100%; height:auto; display:block; }
+
+/* Gallery adjustments */
+#gallery .carousel-inner img{ height:300px; object-fit:cover; border-radius:8px; }
+
+/* Footer */
+footer#footer{ background:transparent; padding-top:2rem; padding-bottom:2rem; }
+
+/* Responsive - mobile first */
+@media (max-width:767px){
+    /* stack hero */
+    #hero .d-sm-flex{ flex-direction:column-reverse; text-align:center; }
+    /* article cards full width-ish */
+    #article .col{ flex:1 1 100%; max-width:100%; }
+    /* detail stack */
+    #article-detail .container{ flex-direction:column; }
+    #article-detail .col-12.col-md-8, #article-detail .col-12.col-md-4{ width:100%; }
+    #gallery .carousel-inner img{ height:180px; }
+}
+
+/* Tablet */
+@media (min-width:768px) and (max-width:1023px){
+    #hero .d-sm-flex{ gap:1rem; }
+    #article .col{ flex:1 1 45%; max-width:47%; }
+    #article-detail .container{ flex-direction:row; }
+    #article-detail .col-12.col-md-8{ flex: 2 1 60%; max-width:60%; }
+    #article-detail .col-12.col-md-4{ flex: 1 1 35%; max-width:35%; }
+    #gallery .carousel-inner img{ height:240px; }
+}
+
+/* Desktop */
+@media (min-width:1024px){
+    #hero .d-sm-flex{ gap:2rem; }
+    #article .col{ flex:1 1 30%; max-width:32%; }
+    #article-detail .container{ flex-direction:row; }
+    #article-detail .col-12.col-md-8{ flex: 2 1 65%; max-width:65%; }
+    #article-detail .col-12.col-md-4{ flex: 1 1 33%; max-width:33%; }
+    #gallery .carousel-inner img{ height:340px; }
+}
+
+/* Small utilities used by the page */
+.text-muted{ color:var(--muted) !important; }
+.lead{ color:#333; }
+
+/* --------------------------------------------------
+   Article Detail - typography & layout examples
+   Demonstrates selectors, color, position, float/clear,
+   box model (margin, padding, border), font and text styling
+   -------------------------------------------------- */
+
+/* apply Poppins specifically to the article detail area (ID selector) */
+#article-detail{
+    font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    color:#1f2937; /* darker neutral for detail text */
+}
+
+/* descendant selector: title styling */
+#article-detail h2{
+    color:var(--accent); /* use accent variable */
+    font-weight:700; /* bold */
+    margin:0 0 0.5rem 0; /* margin - box model */
+    padding:0; /* padding - box model */
+    letter-spacing:0.2px; /* text styling */
+}
+
+/* class selector for muted meta text */
+#article-detail .text-muted{
+    color:var(--muted);
+    font-size:0.95rem;
+    margin-bottom:1rem;
+}
+
+/* detail hero image wrapped by id selector */
+#detail-hero-wrap{ position:relative; }
+
+/* examples for position: place a small floating badge using absolute positioning */
+#article-detail .hero-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:0.85rem;
+}
+
+/* float & clear example: small image that floats left inside the detail body */
+.detail-body-figure{ float:left; margin-right:1rem; width:140px; border-radius:6px; }
+.detail-body-figure.clearfix{ clear:both; }
+
+/* detail body text: element selector + descendant */
+#article-detail p#detail-body{
+    margin-top:0.5rem; /* box model */
+    line-height:1.7; /* text styling */
+    font-weight:400;
+    color:#333;
+}
+
+/* a card-like box to showcase the box model: border, padding, margin */
+#article-detail .meta-box{
+    border:1px solid rgba(0,0,0,0.06);
+    padding:1rem; /* inner spacing */
+    margin-top:1.25rem; /* outer spacing */
+    border-radius:var(--radius);
+    background:#fbfbfc;
+}
+
+/* a utility to demonstrate float clearing when used inside small columns */
+.clearfix::after{ content:''; display:table; clear:both; }
+
+/* responsive adjustment for the detail area: reduce padding on small screens */
+@media (max-width:767px){
+    #article-detail{ padding-left:0.75rem; padding-right:0.75rem; }
+    /* float images should stack on small screens */
+    .detail-body-figure{ float:none; display:block; margin:0 0 1rem 0; width:100%; }
+}
+
+/* --------------------------------------------------
+   Dark theme (applies when `theme-dark` class is on <html> or <body>)
+   -------------------------------------------------- */
+:root.theme-dark, .theme-dark, html.theme-dark, body.theme-dark{
+    --bg: #0f1724; /* dark navy */
+    --surface: #0b1220;
+    --muted: #9aa6b2;
+    --text: #e6eef7;
+    --card-bg: #0d1a26;
+    --accent: #ff6b6b;
+}
+
+/* apply background and text for dark theme */
+.theme-dark body, .theme-dark{
+    background:var(--bg);
+    color:var(--text);
+}
+.theme-dark .navbar{ background:transparent; }
+.theme-dark .navbar .nav-link, .theme-dark .navbar .navbar-brand{ color:var(--text) !important; }
+.theme-dark .card{ background:var(--card-bg); color:var(--text); border-color: rgba(255,255,255,0.04); }
+.theme-dark #article-detail{ background:transparent; }
+.theme-dark footer#footer{ color:var(--muted); }
+.theme-dark .btn-dark{ background:#152235; border-color: rgba(255,255,255,0.06); color:var(--text); }
+.theme-dark .btn-outline-secondary{ color:var(--text); border-color: rgba(255,255,255,0.08); }
+
+/* subtle transitions */
+html, body, .card, #article-detail{ transition: background-color .18s ease, color .18s ease; }
+
+/* Clock styling in hero */
+#clock{ font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; }
+#clock #time{ font-size:1.15rem; display:inline-block; margin-right:0.5rem; }
+
+/* --------------------------------------------------
+   Dark theme detailed overrides for Bootstrap elements
+   Ensure navbar, hero, gallery and other areas also switch
+   -------------------------------------------------- */
+html.theme-dark .navbar,
+html.theme-dark .bg-body-tertiary{
+    background-color: #071025 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+html.theme-dark .navbar .nav-link,
+html.theme-dark .navbar .navbar-brand,
+html.theme-dark .navbar .nav-item,
+html.theme-dark .navbar .navbar-toggler{ color:var(--text) !important; }
+
+/* ensure icons in navbar (bootstrap-icons) inherit color */
+html.theme-dark .navbar .bi{ color:var(--text) !important; }
+
+/* hero background override (bg-danger-subtle) */
+html.theme-dark #hero.bg-danger-subtle{ background-color: rgba(7,16,30,0.7) !important; }
+html.theme-dark #hero h1,
+html.theme-dark #hero h4,
+html.theme-dark #hero p,
+html.theme-dark #hero .lead{ color:var(--text) !important; }
+
+/* Article cards */
+html.theme-dark #article .card{ background:var(--card-bg) !important; color:var(--text) !important; border-color: rgba(255,255,255,0.04) !important; }
+html.theme-dark #article .card .card-title,
+html.theme-dark #article .card .card-text,
+html.theme-dark #article .card .card-footer{ color:var(--text) !important; }
+html.theme-dark #article .card img{ filter: brightness(0.9) contrast(0.95); }
+
+/* Gallery */
+html.theme-dark #gallery.bg-danger-subtle{ background-color: rgba(7,16,30,0.6) !important; }
+html.theme-dark #gallery .carousel-inner img{ filter: brightness(0.85) contrast(0.95); }
+html.theme-dark .carousel-control-prev-icon,
+html.theme-dark .carousel-control-next-icon{ filter: invert(1) !important; }
+
+/* Footer */
+html.theme-dark footer#footer{ background:transparent; color:var(--muted); }
+html.theme-dark footer#footer a{ color:var(--text); }
+
+/* Muted text and small metadata */
+html.theme-dark .text-body-secondary,
+html.theme-dark .text-muted,
+html.theme-dark small{ color:var(--muted) !important; }
+
+/* Links */
+html.theme-dark a{ color:#9fd3ff; }
+
+/* small safety: make sure buttons are readable */
+html.theme-dark .btn{ border-color: rgba(255,255,255,0.06); }
+
+/* Smooth transition for theme swaps */
+html.theme-dark .navbar, html.theme-dark #hero, html.theme-dark #article, html.theme-dark #gallery, html.theme-dark footer{ transition: background-color .2s ease, color .2s ease; }
+
+/* New sections: Schedule & About - dark theme helpers */
+.theme-dark .table{ color:var(--text); border-color: rgba(255,255,255,0.08); }
+.theme-dark .table thead th{ color:var(--text); border-bottom-color: rgba(255,255,255,0.08); }
+.theme-dark .table tbody td{ border-top-color: rgba(255,255,255,0.06); }
+.theme-dark .table-striped>tbody>tr:nth-of-type(odd)>*{ background-color: rgba(255,255,255,0.03); }
+.theme-dark #about .card{ background:var(--card-bg); color:var(--text); }
+.theme-dark #about a.btn-primary{ background:#1f3a5f; border-color:#1f3a5f; }
+.theme-dark #about a.btn-outline-primary{ color:#9fd3ff; border-color:#2a446a; }
+
+
+/* Schedule Section Styling */
+#schedule .card {
+    background-color: #fff; /* isi kartu putih */
+    color: #000; /* teks hitam untuk isi */
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Header kolom (judul Hari, Waktu, dst.) */
+#schedule .card-title {
+    background-color: #dc3545; /* merah */
+    color: #fff; /* teks putih */
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Isi daftar tetap hitam di atas putih */
+#schedule ul li {
+    color: #000; /* teks isi hitam */
+    border-color: rgba(0,0,0,0.1); /* garis pemisah halus */
+    background-color: #fff;
+}
+
+/* Rata tengah teks pada judul dan isi */
+#schedule .card-body {
+    text-align: center;
+}
