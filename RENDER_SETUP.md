@@ -9,14 +9,14 @@
 
 ---
 
-## 📋 Langkah-Langkah Deploy
+## 📋 Langkah-Langkah Deploy (100% GRATIS)
 
 ### 1. Persiapan GitHub
 
 Pastikan semua file sudah di-push ke GitHub:
 ```bash
 git add .
-git commit -m "Add Render configuration"
+git commit -m "Deploy to Render"
 git push origin main
 ```
 
@@ -27,75 +27,94 @@ git push origin main
 3. Sign up dengan GitHub account
 4. Authorize Render untuk akses repository
 
-### 3. Deploy MySQL Database
+---
 
-1. Di Render Dashboard, klik **New +** → **Blueprint**
-2. Connect repository: **AlvinMoved13/pbw**
-3. Klik **Apply**
+## 🗄️ STEP 1: Deploy MySQL Database (Private Service)
 
-Render akan otomatis:
-- Buat MySQL service dari `Dockerfile.mysql`
-- Buat PHP web service dari `Dockerfile`
-- Link kedua services via environment variables
-- Run `railway_setup.sql` untuk setup database
+1. Di Render Dashboard, klik **New +**
+2. Pilih **Private Service** (JANGAN pilih Web Service atau Static Site!)
+3. Klik **Build and deploy from a Git repository** → **Next**
+4. Connect repository: **AlvinMoved13/pbw** → **Connect**
 
-### 4. Tunggu Deploy Selesai
+5. **Isi Form MySQL:**
+   - **Name:** `pbw-mysql`
+   - **Region:** Singapore (atau terdekat)
+   - **Branch:** `main`
+   - **Root Directory:** kosongkan
+   - **Environment:** **Docker**
+   - **Dockerfile Path:** `./Dockerfile.mysql`
+   - **Instance Type:** **Free**
 
-- MySQL service: ~3-5 menit
-- PHP web service: ~5-7 menit
-- Status: Dashboard → Services → **pbw** → Lihat logs
+6. **Environment Variables** - Klik **Add Environment Variable**:
+   ```
+   Key: MYSQL_ROOT_PASSWORD
+   Value: pbw_password_2024 (atau password kuat lainnya)
+   
+   Key: MYSQL_DATABASE
+   Value: railway
+   ```
 
-### 5. Akses Aplikasi
+7. Klik **Create Private Service**
 
-Setelah deploy selesai:
-1. Klik service **pbw** di dashboard
-2. Copy URL (format: `https://pbw-xxxx.onrender.com`)
-3. Buka di browser
+8. **TUNGGU** sampai status **Live** (~3-5 menit)
 
-**Login credentials:**
-- Username: `admin`
-- Password: `admin123`
+9. **CATAT** informasi penting:
+   - Klik service **pbw-mysql**
+   - Lihat **Internal Hostname** (contoh: `pbw-mysql-xxxx`)
+   - SIMPAN hostname ini, akan dipakai di Step 2
 
 ---
 
-## 🔧 Alternatif: Deploy Manual (Tanpa Blueprint)
+## 🌐 STEP 2: Deploy PHP Application (Web Service)
 
-Jika render.yaml tidak otomatis terdeteksi:
+1. Dashboard → **New +**
+2. Pilih **Web Service** (bukan Private Service atau Static Site!)
+3. Klik **Build and deploy from a Git repository** → **Next**
+4. Connect repository: **AlvinMoved13/pbw** → **Connect**
 
-### A. Deploy MySQL Dulu
-
-1. Dashboard → **New +** → **Web Service**
-2. Connect repository: **AlvinMoved13/pbw**
-3. Isi form:
-   - **Name:** `pbw-mysql`
-   - **Environment:** `Docker`
-   - **Dockerfile Path:** `./Dockerfile.mysql`
-   - **Plan:** Free
-4. Environment Variables:
-   ```
-   MYSQL_ROOT_PASSWORD=<generate random password>
-   MYSQL_DATABASE=railway
-   ```
-5. Klik **Create Web Service**
-
-### B. Deploy PHP Application
-
-1. Dashboard → **New +** → **Web Service**
-2. Connect repository: **AlvinMoved13/pbw**
-3. Isi form:
+5. **Isi Form PHP:**
    - **Name:** `pbw`
-   - **Environment:** `Docker`
+   - **Region:** Singapore (HARUS sama dengan MySQL!)
+   - **Branch:** `main`
+   - **Root Directory:** kosongkan
+   - **Environment:** **Docker**
    - **Dockerfile Path:** `./Dockerfile`
-   - **Plan:** Free
-4. Environment Variables (ambil dari MySQL service):
+   - **Instance Type:** **Free**
+
+6. **Environment Variables** - Klik **Add Environment Variable**:
    ```
-   MYSQLHOST=<internal hostname dari pbw-mysql>
-   MYSQLPORT=3306
-   MYSQLUSER=root
-   MYSQLPASSWORD=<password yang di-generate>
-   MYSQLDATABASE=railway
+   Key: MYSQLHOST
+   Value: pbw-mysql-xxxx (paste Internal Hostname dari Step 1)
+   
+   Key: MYSQLPORT
+   Value: 3306
+   
+   Key: MYSQLUSER
+   Value: root
+   
+   Key: MYSQLPASSWORD
+   Value: pbw_password_2024 (SAMA dengan Step 1)
+   
+   Key: MYSQLDATABASE
+   Value: railway
    ```
-5. Klik **Create Web Service**
+
+7. Klik **Create Web Service**
+
+8. **TUNGGU** sampai status **Live** (~5-7 menit)
+
+---
+
+## ✅ STEP 3: Akses Aplikasi
+
+1. Klik service **pbw** di dashboard
+2. Copy URL yang muncul (format: `https://pbw-xxxx.onrender.com`)
+3. Buka di browser
+4. **Login:**
+   - Username: `admin`
+   - Password: `admin123`
+
+**🎉 SELESAI! Aplikasi sudah online!**
 
 ---
 
