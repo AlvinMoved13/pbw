@@ -1,19 +1,19 @@
 <?php
 date_default_timezone_set('Asia/Jakarta');
 
-// Deteksi environment (local atau production)
-$is_production = isset($_ENV['RAILWAY_ENVIRONMENT']) || isset($_ENV['VERCEL']) || getenv('MYSQLHOST');
+// Deteksi environment - Railway menggunakan MYSQL* variables
+$is_production = getenv('MYSQLHOST') !== false;
 
 if ($is_production) {
     // Konfigurasi Railway MySQL (Production)
-    // Ganti dengan kredensial Railway Anda setelah setup
-    $servername = getenv('MYSQLHOST') ?: 'junction.proxy.rlwy.net';
-    $username = getenv('MYSQLUSER') ?: 'root';
-    $password = getenv('MYSQLPASSWORD') ?: '';
-    $db = getenv('MYSQLDATABASE') ?: 'railway';
-    $port = getenv('MYSQLPORT') ?: 3306;
+    // Railway secara otomatis inject environment variables ini
+    $servername = getenv('MYSQLHOST');
+    $username = getenv('MYSQLUSER');
+    $password = getenv('MYSQLPASSWORD');
+    $db = getenv('MYSQLDATABASE');
+    $port = (int)getenv('MYSQLPORT');
     
-    // Create connection dengan port
+    // Create connection dengan port untuk Railway
     $conn = new mysqli($servername, $username, $password, $db, $port);
 } else {
     // Konfigurasi Local (XAMPP)
@@ -22,12 +22,13 @@ if ($is_production) {
     $password = "";
     $db = "webdailyjournal";
     
-    // Create connection
+    // Create connection local
     $conn = new mysqli($servername, $username, $password, $db);
 }
 
 // Check connection
 if ($conn->connect_error) {
+    error_log("Database connection failed: " . $conn->connect_error);
     die("Connection failed: " . $conn->connect_error);
 }
 
